@@ -1,0 +1,9 @@
+ul, ol {
+	margin-left: -20px;
+}
+
+div {
+	border: solid black thin; 
+	margin: 5px; 
+	padding: 8px;
+}

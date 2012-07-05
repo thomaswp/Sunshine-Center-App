@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, Menu!</string>
+    <string name="app_name">Sunshine</string>
+    <string name="recordsAndMeetings">Records and Meetings</string>
+    <string name="seekers">Seekers</string>
+    <string name="holders">Holders</string>
+    <string name="laws">Laws</string>
+
+</resources>
