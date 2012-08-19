@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <record name="Seekers">
-	<section title="Records">
+	<section title="Public Records">
 		<header title="Public Records Law">
 			<q>What is a public record?</q>
 			<an>The term includes paper records, of course. Correspondence,
@@ -9,7 +10,9 @@
 				received by a government agency in the course of doing public
 				business.</an>
 			<q>How do you know which ones are public and which ones aren't?</q>
-			<an>Under the state Public Records Law, G.S. 132, every record is
+			<an>Under the state Public Records Law, 
+				<a href="record://laws.publicRecordsLaw.132">G.S. 132</a>, 
+				every record is
 				public unless there's another law that says it isn't. And North
 				Carolina courts have said repeatedly that the state public records
 				law should be construed liberally. So, until you know better, you
@@ -108,7 +111,9 @@
 			<an>
 				<ul>
 					<li>First, talk to them.</li>
-					<li>Ask them to cite the law that trumps G.S 132.</li>
+					<li>Ask them to cite the law that trumps 
+						<a href="record://laws.publicRecordsLaw.132">G.S. 132</a>.
+					</li>
 					<li>
 						Agencies may offer all sorts of reasons for not releasing a
 						public
@@ -221,9 +226,9 @@
 				"unless otherwise specifically provided by law."</an>
 		</header>
 	</section>
-	<section title="Meetings">
+	<section title="Public Meetings">
 		<header title="Open Meeting Law">
-			<q>Who is subject to the law?</q>
+			<q anchor="whoIsSubject">Who is subject to the law?</q>
 			<an>It applies to any public body. "Public body" is a broad term that
 				includes any authority, board, commission, committee, council or
 				other body of state or local government that has at least two
@@ -237,7 +242,7 @@
 				business. And a court has said "deliberate" means to examine, weigh
 				and reflect upon the reasons for or against a possible decision. If
 				a body is only receiving information, that counts.</an>
-			<q>What about conference calls and emails?</q>
+			<q anchor="whatAbout">What about conference calls and emails?</q>
 			<an>Conference calls are covered. A chat room meeting would count as
 				an official meeting. A message sent from one member of a body to all
 				of the others would not -- it's like posting a message on a bulletin
@@ -289,7 +294,8 @@
 				meetings law: confidential information, consultations with an
 				attorney, claims or litigation, business location or expansion, real
 				property acquisition, employment contracts, certain personnel
-				matters and investigations. See G.S. 143-318.11.</an>
+				matters and investigations. See 
+				<a href="http://www.ncga.state.nc.us/gascripts/statutes/statutelookup.pl?statute=143-318.11">G.S. 143-318.11</a>.</an>
 			<q>What procedure must be followed?</q>
 			<an>The law requires the board to disclose the reason for going into
 				the closed session is, and then vote on it. In addition, if the body

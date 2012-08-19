@@ -7,5 +7,10 @@
     <string name="seekers">Seekers</string>
     <string name="holders">Holders</string>
     <string name="laws">Laws</string>
+    <string name="search">Search:</string>
+    <string name="searchInText">search for text in:</string>
+    <string name="questions">questions</string>
+    <string name="answers">answers</string>
+    <string name="go">Go</string>
 
 </resources>

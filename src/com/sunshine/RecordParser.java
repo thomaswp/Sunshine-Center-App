@@ -6,6 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import android.util.Log;
 
@@ -19,6 +20,7 @@ public class RecordParser implements ContentHandler {
 	private Header currentHeader;
 	private StringBuilder currentBody;
 	private boolean bodyContainsHTML;
+	private Attributes currentAttributes;
 	
 	public Record getRecord() {
 		return currentRecord;
@@ -37,13 +39,7 @@ public class RecordParser implements ContentHandler {
 			currentSection.add(currentHeader);
 		} else if (Header.isHeaderElement(qName)) {
 			currentBody = new StringBuilder();
-//		} else if (Header.isListItem(qName)) {
-//			if (currentBody != null) {
-//				if (currentBody.toString().contains("&#8226;")) {
-//					currentBody.append("<br />");
-//				}
-//				currentBody.append("&#8226;");
-//			}
+			currentAttributes = new AttributesImpl(atts);
 		} else if (currentBody != null){
 			currentBody.append("<" + qName);
 			for (int i = 0; i < atts.getLength(); i++) {
@@ -64,7 +60,8 @@ public class RecordParser implements ContentHandler {
 		if (Header.isHeaderElement(qName)) {
 			String body = currentBody.toString();
 			body = body.replace("\n", " ").replace("\t", "");
-			currentHeader.addElement(qName, body, bodyContainsHTML);
+			currentHeader.addElement(qName, currentAttributes, 
+					body, bodyContainsHTML);
 			currentBody = null;
 			bodyContainsHTML = false;
 		} else if (currentBody != null){

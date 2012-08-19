@@ -18,13 +18,22 @@ public class Record extends LinkedList<Record.Section> {
 		return "record".equalsIgnoreCase(qName);
 	}
 	
+	public static String removeSpecialChars(String s) {
+		return s.replace("“", "\"")
+		.replace("”", "\"")
+		.replace("‘", "'")
+		.replace("’", "'")
+		.replace("–", "-")
+		.replace("‑", "-");
+	}
+	
 	public static class Section extends LinkedList<Record.Header> {
 		private static final long serialVersionUID = 1L;
 		
 		public String title;
 		
 		public Section(Attributes atts) {
-			this.title = atts.getValue("title");
+			this.title = removeSpecialChars(atts.getValue("title"));
 		}
 		
 		public static boolean isSection(String qName) {
@@ -38,14 +47,18 @@ public class Record extends LinkedList<Record.Section> {
 		public String title;
 		
 		public Header(Attributes atts) {
-			this.title = atts.getValue("title");
+			this.title = removeSpecialChars(atts.getValue("title"));
 		}
 		
-		public void addElement(String qName, String body, boolean containsHTML) {
+		public Header(String title) {
+			this.title = title;
+		}
+		
+		public void addElement(String qName, Attributes atts, String body, boolean containsHTML) {
 			if (isQuestion(qName)) {
-				add(new Question(body));
+				add(new Question(removeSpecialChars(body), atts));
 			} else if (isAnswer(qName)) {
-				get(size() - 1).answer = body;
+				get(size() - 1).answer = removeSpecialChars(body);
 				get(size() - 1).containsHTML = containsHTML;
 			}
 		}
@@ -73,12 +86,13 @@ public class Record extends LinkedList<Record.Section> {
 	
 	public static class Question implements Serializable {
 		private static final long serialVersionUID = 1L;
-		public String question, answer;
+		public String question, answer, anchor;
 		public boolean containsHTML;
 		
-		public Question(String question) {
+		public Question(String question, Attributes atts) {
 			this.question = question;
 			this.answer = "";
+			this.anchor = atts.getValue("anchor");
 		}
 		
 	}

@@ -29,30 +29,29 @@ public class RecordActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		String r = getIntent().getExtras().getString("record");
-		try {
-			InputStream is = getAssets().open(r);
-			RecordParser parser = new RecordParser();
-			Xml.parse(is, Xml.Encoding.UTF_8, parser);
-			record = parser.getRecord();
-		} catch (Exception e) {
-			e.printStackTrace();
+		record = RecordCache.parseRector(r, getAssets());
+		if (record == null) {
 			finish();
-			return;
 		}
 		
 		createContent();
 	}
 	
 	private void createContent() {
+		int id = 1;
 		
 		LinearLayout host = new LinearLayout(this);
 		host.setOrientation(LinearLayout.VERTICAL);
-		host.setBackgroundColor(MenuActivity.BACKGROUND);
+		host.setBackgroundColor(MenuActivity.BACKGROUND_DARK);
+		host.setId(id++);
 		
 		ScrollView sv = new ScrollView(this);
+		sv.setId(id++);
+		
 		LinearLayout layout = new LinearLayout(this);
 		layout.setPadding(20, 10, 20, 10);
 		layout.setOrientation(LinearLayout.VERTICAL);
+		layout.setId(id++);
 		sv.addView(layout);
 		
 		int WRAP = LayoutParams.WRAP_CONTENT;
@@ -61,11 +60,13 @@ public class RecordActivity extends Activity {
 		for (Section section : record) {
 			LinearLayout secLayout = new LinearLayout(this);
 			secLayout.setOrientation(LinearLayout.VERTICAL);
+			secLayout.setId(id++);
 			
 			TextView tv = new TextView(this);
 			tv.setText(section.title);
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 			tv.setTextColor(Color.BLACK);
+			tv.setId(id++);
 			LayoutParams lps = new LayoutParams(WRAP, WRAP);
 			lps.gravity = Gravity.CENTER_HORIZONTAL;
 			lps.bottomMargin = toPx(15);
@@ -75,8 +76,9 @@ public class RecordActivity extends Activity {
 			for (Header header : section) {
 				Button button = new Button(this);
 				button.setText(header.title);
-				button.setPadding(20, 20, 20, 20);
+				button.setPadding(20, 20, 20, 25);
 				button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+				button.setId(id++);
 				
 				final Header fHeader = header;
 				button.setOnClickListener(new OnClickListener() {
@@ -84,6 +86,7 @@ public class RecordActivity extends Activity {
 					public void onClick(View v) {
 						Intent intent = new Intent(RecordActivity.this, QnAActivity.class);
 						intent.putExtra("header", fHeader);
+						intent.putExtra("path", fHeader.title);
 						startActivity(intent);
 					}
 				});
