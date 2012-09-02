@@ -40,7 +40,7 @@ public class MenuActivity extends Activity {
         
         Button buttonSeekers =( Button)findViewById(R.id.buttonSeekers);
         buttonSeekers.setText(Html.fromHtml(
-        		"Seekers<br /><small><small><i>of pulbic records</i></small></small>"));
+        		"Seekers<br /><small><small><i>of public records</i></small></small>"));
         buttonSeekers.setOnClickListener(
         		new OnClickListener() {
 			@Override
@@ -51,7 +51,7 @@ public class MenuActivity extends Activity {
         
         Button buttonHolders = (Button)findViewById(R.id.buttonHolders);
         buttonHolders.setText(Html.fromHtml(
-        		"Holders<br /><small><small><i>of pulbic records</i></small></small>"));
+        		"Holders<br /><small><small><i>of public records</i></small></small>"));
         buttonHolders.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

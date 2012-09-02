@@ -10,28 +10,29 @@
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
+
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-
+
                 <ImageView
                     android:id="@+id/imageViewSunshineBig"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:padding="10dip"
-                    android:src="@drawable/logo_trans" />
+                    android:src="@drawable/logo_trans" 
+                    android:contentDescription="Sunshine"/>
 
             </RelativeLayout>
-
+
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
@@ -66,7 +67,7 @@
 
                         <LinearLayout
                             android:id="@+id/linearLayout6"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1" >
                         </LinearLayout>
@@ -128,7 +129,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
+
             <LinearLayout
                 android:id="@+id/linearLayoutContact"
                 android:layout_width="match_parent"
@@ -144,7 +145,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
                 </LinearLayout>
-
+
                 <ImageView
                     android:id="@+id/imageViewPhone"
                     android:layout_width="wrap_content"
@@ -159,7 +160,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
                 </LinearLayout>
-
+
                 <ImageView
                     android:id="@+id/imageViewEmail"
                     android:layout_width="wrap_content"
@@ -174,7 +175,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
                 </LinearLayout>
-
+
                 <ImageView
                     android:id="@+id/imageViewFacebook"
                     android:layout_width="wrap_content"
@@ -189,7 +190,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
                 </LinearLayout>
-
+
                 <ImageView
                     android:id="@+id/imageViewTwitter"
                     android:layout_width="wrap_content"
@@ -204,7 +205,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical" >
                 </LinearLayout>
-
+
                 <ImageView
                     android:id="@+id/imageViewSunshine"
                     android:layout_width="wrap_content"
