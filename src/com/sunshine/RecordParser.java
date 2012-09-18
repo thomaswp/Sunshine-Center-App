@@ -40,6 +40,7 @@ public class RecordParser implements ContentHandler {
 		} else if (Header.isHeaderElement(qName)) {
 			currentBody = new StringBuilder();
 			currentAttributes = new AttributesImpl(atts);
+			bodyContainsHTML = true;
 		} else if (currentBody != null){
 			currentBody.append("<" + qName);
 			for (int i = 0; i < atts.getLength(); i++) {

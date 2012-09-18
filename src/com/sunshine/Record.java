@@ -19,12 +19,12 @@ public class Record extends LinkedList<Record.Section> {
 	}
 	
 	public static String removeSpecialChars(String s) {
-		return s.replace("“", "\"")
-		.replace("”", "\"")
-		.replace("‘", "'")
+		return s.replace("”", "\"")
+		.replace("“", "\"")
 		.replace("’", "'")
+		.replace("‘", "'")
 		.replace("–", "-")
-		.replace("‑", "-");
+		.replace("-", "-");
 	}
 	
 	public static class Section extends LinkedList<Record.Header> {
