@@ -7,6 +7,8 @@ changed encoding to display utf-8/fixed the law symbol
 reworked layout for different screen sizes (so social bar displays)
 changes from email 11/6 from Brooke
 partial search improvement
-12/28 2.75+
+12/28 2.75
 mostly fixed search headers/drop down arrow problem
 search favors exact terms
+12/31 2.75
+Comments, cleanup and bug fixes

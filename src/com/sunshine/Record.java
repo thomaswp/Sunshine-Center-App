@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import org.xml.sax.Attributes;
 
+//Represents a while XML file
 public class Record extends LinkedList<Record.Section> {
 	private static final long serialVersionUID = 1L;
 	
@@ -20,6 +21,7 @@ public class Record extends LinkedList<Record.Section> {
 	}
 	
 	//Should be unnecessary now that html displays in utf-8
+	//Used to get rid of MSWord chatacters
 	public static String removeSpecialChars(String s) {
 		if (s == null) return null;
 		return s;
@@ -31,6 +33,7 @@ public class Record extends LinkedList<Record.Section> {
 //		.replace("-", "-");
 	}
 	
+	//A section of the XML file (or a group of buttons in the app)
 	public static class Section extends LinkedList<Record.Header> {
 		private static final long serialVersionUID = 1L;
 		
@@ -45,9 +48,13 @@ public class Record extends LinkedList<Record.Section> {
 		}
 	}
 	
+	//A single button/QnA group
 	public static class Header implements Serializable, Iterable<Question> {
 		private static final long serialVersionUID = 1L;
 	
+		//We contain a LinkedList instead of extending it because
+		//when Android parcels LL's it uses another representation
+		//which loses any data in the subclass
 		public LinkedList<Question> questions = new LinkedList<Record.Question>();
 	
 		public String title;
@@ -55,12 +62,16 @@ public class Record extends LinkedList<Record.Section> {
 		
 		public Header(Attributes atts) {
 			this.title = removeSpecialChars(atts.getValue("title"));
+			//special italicized "tip" that appear as the top
+			//of the qna list
 			this.tip = removeSpecialChars(atts.getValue("tip"));
 		}
 		
 		public Header(String title) {
 			this.title = title;
 		}
+		
+		//LinkedList wrapping methods
 		
 		public Question get(int index) {
 			return questions.get(index);
@@ -80,6 +91,7 @@ public class Record extends LinkedList<Record.Section> {
 		}
 		
 		
+		//Add a <q> or <an>
 		public void addElement(String qName, Attributes atts, String body, boolean containsHTML) {
 			if (isQuestion(qName)) {
 				add(new Question(this, removeSpecialChars(body), atts));
@@ -110,6 +122,7 @@ public class Record extends LinkedList<Record.Section> {
 		}
 	}
 	
+	//Represents a singe question and answer
 	public static class Question implements Serializable {
 		private static final long serialVersionUID = 1L;
 		public String question, answer, anchor;

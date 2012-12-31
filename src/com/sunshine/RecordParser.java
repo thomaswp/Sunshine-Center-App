@@ -1,25 +1,26 @@
 package com.sunshine;
 
-import java.util.Arrays;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import android.util.Log;
-
 import com.sunshine.Record.Header;
 import com.sunshine.Record.Section;
 
+//Parses records
 public class RecordParser implements ContentHandler {
 
+	//Current elements as we work through the XML file
 	private Record currentRecord;
 	private Section currentSection;
 	private Header currentHeader;
 	private StringBuilder currentBody;
+	
+	//Does the current question body contain HTML?
 	private boolean bodyContainsHTML;
+	//The attributes of the current element
 	private Attributes currentAttributes;
 	
 	public Record getRecord() {
@@ -29,6 +30,8 @@ public class RecordParser implements ContentHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes atts) throws SAXException {
+		//Create a new representation for the current element
+		//and add it to its parent
 		if (Record.isRecord(qName)) {
 			currentRecord = new Record(atts);
 		} else if (Section.isSection(qName)) {
@@ -38,10 +41,14 @@ public class RecordParser implements ContentHandler {
 			currentHeader = new Header(atts);
 			currentSection.add(currentHeader);
 		} else if (Header.isHeaderElement(qName)) {
+			//If we're in a <q> or <an>, we need a new
+			//StringBuilder to hold the body
 			currentBody = new StringBuilder();
 			currentAttributes = new AttributesImpl(atts);
-			bodyContainsHTML = true;
 		} else if (currentBody != null){
+			//If we have an element inside of a <q> or <an>
+			//we need to rewrite it as body text instead
+			
 			currentBody.append("<" + qName);
 			for (int i = 0; i < atts.getLength(); i++) {
 				currentBody.append(String.format(
@@ -59,6 +66,7 @@ public class RecordParser implements ContentHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if (Header.isHeaderElement(qName)) {
+			//When we finish a header's element, add it to the header
 			String body = currentBody.toString();
 			body = body.replace("\n", " ").replace("\t", "");
 			currentHeader.addElement(qName, currentAttributes, 
@@ -66,6 +74,8 @@ public class RecordParser implements ContentHandler {
 			currentBody = null;
 			bodyContainsHTML = false;
 		} else if (currentBody != null){
+			//Otherwise if we're still inside a header's element
+			//We need to write the closing tag to the HTML in the body
 			currentBody.append("</" + qName + ">");
 		}
 	}
@@ -74,6 +84,7 @@ public class RecordParser implements ContentHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		if (currentBody != null) {
+			//add the body to the StringBuilder
 			currentBody.append(ch, start, length);
 		}
 		

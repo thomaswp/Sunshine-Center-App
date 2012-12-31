@@ -6,7 +6,15 @@ import java.util.HashMap;
 import android.content.res.AssetManager;
 import android.util.Xml;
 
+//Holds all the records, so we only have to parse them once
 public class RecordCache {
+	
+	public final static String[] RECORDS = new String[] {
+		"seekers.xml",
+		"holders.xml",
+		"laws.xml"
+	}; 
+	
 	private static HashMap<String, Record> recordCache = new HashMap<String, Record>();
 	
 	public static Record parseRector(String fileName, AssetManager assets) {

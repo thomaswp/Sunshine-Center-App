@@ -1,7 +1,5 @@
 package com.sunshine;
 
-import java.io.InputStream;
-
 import com.sunshine.Record.Header;
 import com.sunshine.Record.Section;
 
@@ -13,10 +11,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.util.Xml;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,9 +21,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
+/**
+ * Activity for displaying records, the top-level structure for
+ * questions
+ * @author Thomas
+ *
+ */
 public class RecordActivity extends Activity {
-	Record record;
+	//The record to display
+	private Record record;
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -36,6 +39,8 @@ public class RecordActivity extends Activity {
 		record = RecordCache.parseRector(r, getAssets());
 		
 		if (record == null) {
+			//If you get this message, check LogCat because something in
+			//the XML to be displayed is messed up
 			new AlertDialog.Builder(this)
 			.setTitle("Error")
 			.setMessage("We're sorry, but an error has occured. Please try again later")
@@ -58,30 +63,36 @@ public class RecordActivity extends Activity {
 	}
 	
 	private void createContent() {
+		//use ids so it will recreate properly when orientation changes
 		int id = 1;
 		
+		//top-level view
 		LinearLayout host = new LinearLayout(this);
 		host.setOrientation(LinearLayout.VERTICAL);
 		host.setBackgroundColor(MenuActivity.BACKGROUND_DARK);
 		host.setId(id++);
 		
+		//Scrolling body
 		ScrollView sv = new ScrollView(this);
 		sv.setId(id++);
 		
+		//ScollView's only child
 		LinearLayout layout = new LinearLayout(this);
 		layout.setPadding(20, 10, 20, 10);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setId(id++);
 		sv.addView(layout);
 		
-		int WRAP = LayoutParams.WRAP_CONTENT;
-		int MATCH = LayoutParams.MATCH_PARENT;
+		int WRAP = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+		int MATCH = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 		
+		//For every section in the record...
 		for (Section section : record) {
 			LinearLayout secLayout = new LinearLayout(this);
 			secLayout.setOrientation(LinearLayout.VERTICAL);
 			secLayout.setId(id++);
 			
+			//Mark give it a title
 			TextView tv = new TextView(this);
 			tv.setText(section.title);
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
@@ -93,7 +104,9 @@ public class RecordActivity extends Activity {
 			lps.topMargin = toPx(10);
 			secLayout.addView(tv, lps);
 			
+			//And for every header in that section...
 			for (Header header : section) {
+				//Add a button that links to the QnAActivity to display it
 				Button button = new Button(this);
 				button.setText(header.title);
 				button.setPadding(20, 20, 20, 25);
