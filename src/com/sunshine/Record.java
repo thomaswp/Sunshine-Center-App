@@ -1,6 +1,7 @@
 package com.sunshine;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.xml.sax.Attributes;
@@ -18,13 +19,16 @@ public class Record extends LinkedList<Record.Section> {
 		return "record".equalsIgnoreCase(qName);
 	}
 	
+	//Should be unnecessary now that html displays in utf-8
 	public static String removeSpecialChars(String s) {
-		return s.replace("”", "\"")
-		.replace("“", "\"")
-		.replace("’", "'")
-		.replace("‘", "'")
-		.replace("–", "-")
-		.replace("-", "-");
+		if (s == null) return null;
+		return s;
+//		return s.replace("”", "\"")
+//		.replace("“", "\"")
+//		.replace("’", "'")
+//		.replace("‘", "'")
+//		.replace("–", "-")
+//		.replace("-", "-");
 	}
 	
 	public static class Section extends LinkedList<Record.Header> {
@@ -41,22 +45,44 @@ public class Record extends LinkedList<Record.Section> {
 		}
 	}
 	
-	public static class Header extends LinkedList<Question> {
+	public static class Header implements Serializable, Iterable<Question> {
 		private static final long serialVersionUID = 1L;
-		
+	
+		public LinkedList<Question> questions = new LinkedList<Record.Question>();
+	
 		public String title;
+		public String tip;
 		
 		public Header(Attributes atts) {
 			this.title = removeSpecialChars(atts.getValue("title"));
+			this.tip = removeSpecialChars(atts.getValue("tip"));
 		}
 		
 		public Header(String title) {
 			this.title = title;
 		}
 		
+		public Question get(int index) {
+			return questions.get(index);
+		}
+		
+		public int size() {
+			return questions.size();
+		}
+		
+		public void add(Question question) {
+			questions.add(question);
+		}
+
+		@Override
+		public Iterator<Question> iterator() {
+			return questions.iterator();
+		}
+		
+		
 		public void addElement(String qName, Attributes atts, String body, boolean containsHTML) {
 			if (isQuestion(qName)) {
-				add(new Question(removeSpecialChars(body), atts));
+				add(new Question(this, removeSpecialChars(body), atts));
 			} else if (isAnswer(qName)) {
 				get(size() - 1).answer = removeSpecialChars(body);
 				get(size() - 1).containsHTML = containsHTML;
@@ -88,8 +114,10 @@ public class Record extends LinkedList<Record.Section> {
 		private static final long serialVersionUID = 1L;
 		public String question, answer, anchor;
 		public boolean containsHTML;
+		public Header parent;
 		
-		public Question(String question, Attributes atts) {
+		public Question(Header parent, String question, Attributes atts) {
+			this.parent = parent;
 			this.question = question;
 			this.answer = "";
 			this.anchor = atts.getValue("anchor");

@@ -2,6 +2,8 @@ package com.sunshine;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,10 +16,22 @@ import com.sunshine.Record.Section;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.NinePatch;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.Bitmap.Config;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +39,7 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.Spannable;
 import android.util.Log;
+import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -34,64 +49,69 @@ import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 public class QnAActivity extends Activity {
 
-	private List<Question> header;
-	private WebClientIntercept intercept;
-	private ExpandableListView listView;
-	private String path;
-	private QnAExpandableListAdapter adapter;
-	private Pattern pattern;
+	protected Header header;
+	protected WebClientIntercept intercept;
+	protected ExpandableListView listView;
+	protected QnAExpandableListAdapter adapter;
+	protected Pattern pattern;
+	protected StateListDrawable groupIndicator;
+	
+	private final static int[] STATE_NORMAL = new int[] { };
+	private final static int[] STATE_EXPANDED = new int[] { android.R.attr.state_expanded }; 
 
-	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		intercept = new WebClientIntercept();
 
 		Serializable s = getIntent().getExtras().getSerializable("header");
-		header = (List<Question>)s;
+		header = (Header)s;
 		if (header == null) {
 			finish();
 			return;
 		}
-		path = getIntent().getExtras().getString("path");
 		String patternS = getIntent().getExtras().getString("pattern");
 		if (patternS != null) pattern = Pattern.compile(patternS, 
 				Pattern.CASE_INSENSITIVE);
 
 		createContent(savedInstanceState);
-		
+
 		if (savedInstanceState != null) {
 			int orientation = 
-				getResources().getConfiguration().orientation;
+					getResources().getConfiguration().orientation;
 			int oldOrientation =
-				savedInstanceState.getInt("orientation");
-			
+					savedInstanceState.getInt("orientation");
+
+			//Try to find our place?
 			if (orientation != oldOrientation) {
-//				int firstPos = savedInstanceState.getInt("firstPos");
-//				if (firstPos > 0) {
-//					listView.collapseGroup(firstPos - 1);
-//				}
-//				listView.setSelection(firstPos);
+				//				int firstPos = savedInstanceState.getInt("firstPos");
+				//				if (firstPos > 0) {
+				//					listView.collapseGroup(firstPos - 1);
+				//				}
+				//				listView.setSelection(firstPos);
 			}
 		}
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("orientation", 
 				getResources().getConfiguration().orientation);
-		outState.putInt("firstPos",
-				listView.getFirstVisiblePosition());
+		if (listView != null) {
+			outState.putInt("firstPos",
+					listView.getFirstVisiblePosition());
+		}
 	}
 
-	private void createContent(Bundle savedInstanceState) {
+	protected void createContent(Bundle savedInstanceState) {
 		int id = 1;
 
 		LinearLayout host = new LinearLayout(this);
@@ -101,7 +121,14 @@ public class QnAActivity extends Activity {
 
 		int WRAP = LayoutParams.WRAP_CONTENT;
 		int MATCH = LayoutParams.MATCH_PARENT;
-	
+
+		if (header.tip != null) {
+			TextView tip = getHeaderView();
+			tip.setId(id++);
+			tip.setText(Html.fromHtml(String.format("<i>%s</i>", header.tip)));
+			host.addView(tip);
+		}
+
 
 		listView = new ExpandableListView(this);
 		listView.setId(id++);
@@ -109,7 +136,66 @@ public class QnAActivity extends Activity {
 		lps.weight = 1;
 		host.addView(listView, lps);
 
-		adapter = new QnAExpandableListAdapter();
+		try {
+			Resources.Theme theme = getTheme();
+			TypedValue typedValue = new TypedValue();
+			theme.resolveAttribute(android.R.attr.expandableListViewStyle, typedValue , true);
+			TypedArray typedArray = theme.obtainStyledAttributes(typedValue.resourceId, new int[] { android.R.attr.groupIndicator });
+			groupIndicator = (StateListDrawable)typedArray.getDrawable(0);
+			
+			int[][] states = new int[][] {
+					new int[] { android.R.attr.state_expanded, android.R.attr.state_empty },
+					new int[] { android.R.attr.state_expanded },
+					new int[] { android.R.attr.state_empty },
+					new int[] { },
+			};
+
+			StateListDrawable sld = new StateListDrawable();
+			Rect padding = new Rect();
+			padding.top = 100;
+			padding.bottom = 100;
+			padding.right = 50;
+			for (int i = 0; i < states.length; i++) {
+				groupIndicator.setState(states[i]);
+				
+				
+//				Bitmap bmp = Bitmap.createBitmap(groupIndicator.getIntrinsicWidth(), 
+//						groupIndicator.getIntrinsicHeight(), Config.ARGB_8888);
+				NinePatchDrawable npd = (NinePatchDrawable)groupIndicator.getCurrent();
+				
+//				Field field = npd.getClass().getDeclaredField("mNinePatch");
+//				field.setAccessible(true);
+//				NinePatch np = (NinePatch) field.get(npd);
+//				field = np.getClass().getDeclaredField("mChunk");
+//				field.setAccessible(true);
+//				byte[] chunk = (byte[])field.get(np);
+				
+				
+//				Canvas canvas = new Canvas(bmp);
+//				groupIndicator.setBounds(0, 0, bmp.getWidth(), bmp.getHeight());
+//				groupIndicator.getCurrent().draw(canvas);
+				
+				
+				
+//				BitmapDrawable bmpDrawable = new BitmapDrawable(bmp);
+				
+				if (i == 0) {
+					ColorDrawable cd = new ColorDrawable(Color.TRANSPARENT);
+					sld.addState(states[i], cd);
+				} else {
+					sld.addState(states[i], npd);
+				}
+			}
+			
+
+			if (pattern != null) {
+			}
+			listView.setGroupIndicator(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		adapter = new QnAExpandableListAdapter(header);
 		listView.setAdapter(adapter);
 
 		setContentView(host, new LayoutParams(MATCH, MATCH));
@@ -120,21 +206,16 @@ public class QnAActivity extends Activity {
 				openQuestion(question);
 			}
 		}
-		
-		
-		TextView tv = new TextView(this);
-		tv.setText(Html.fromHtml("<b>" + path + "</b>"));
-		tv.setTextSize(14);
-		tv.setGravity(Gravity.CENTER);
+
+
+		TextView tv = getHeaderView();
+		tv.setText(Html.fromHtml("<b>" + header.title + "</b>"));
 		tv.setId(id++);
-		tv.setPadding(5, 5, 5, 5);
-		tv.setTextColor(MenuActivity.BACKGROUND_LIGHT);
-		tv.setBackgroundColor(MenuActivity.HIGHLIGHT);
 		lps = new LayoutParams(MATCH, WRAP);
 		host.addView(tv, lps);
 	}
 
-	private void openQuestion(String question) {
+	protected void openQuestion(String question) {
 		for (int i = 0; i < header.size(); i++) {
 			if (question.equalsIgnoreCase(header.get(i).anchor)) {
 				if (i > 0) {
@@ -145,7 +226,7 @@ public class QnAActivity extends Activity {
 					//close the child to make its height=0
 					listView.collapseGroup(i - 1);
 				}
-				
+
 				listView.expandGroup(i);
 				listView.setSelection(i);
 				View view = adapter.getGroupView(i, true, null, listView);
@@ -183,7 +264,7 @@ public class QnAActivity extends Activity {
 					}
 				});
 				thread.start();
-				
+
 
 				//This is to force the listview to update, which
 				//it seems disinclined to do after the first time
@@ -203,21 +284,36 @@ public class QnAActivity extends Activity {
 		}
 	}
 
-	private int toPx(int dip) {
+	protected TextView getHeaderView() {
+		TextView tv = new TextView(this);
+		tv.setTextSize(14);
+		tv.setGravity(Gravity.CENTER);
+		tv.setPadding(5, 5, 5, 5);
+		tv.setTextColor(MenuActivity.BACKGROUND_LIGHT);
+		tv.setBackgroundColor(MenuActivity.HIGHLIGHT);
+		return tv;
+	}
+
+	protected int toPx(int dip) {
 		return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, 
 				getResources().getDisplayMetrics());
 	}
 
-	private class QnAExpandableListAdapter extends BaseExpandableListAdapter {
+	protected class QnAExpandableListAdapter extends BaseExpandableListAdapter {
 
 		private LinkedList<View> parents, children;
 		String css;
 		Typeface typeface;
+		Header header;
+		int id = 100;
+		final int IMAGE_VIEW_ID = 10000;
 
-		public QnAExpandableListAdapter() {
+		public QnAExpandableListAdapter(Header header) {
 			super();
+			this.header = header;
 
-			css = "<head><style media='screen' type='text/css'>";
+			css = "<head><meta charset='utf-8'>" +
+					"<style media='screen' type='text/css'>";
 			try {
 				Scanner sc = new Scanner(getAssets().open("style.css"));
 				while (sc.hasNext()) css += sc.nextLine(); 
@@ -233,7 +329,7 @@ public class QnAActivity extends Activity {
 			Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					for (int i = 0; i < header.size(); i++) {
+					for (int i = 0; i < QnAExpandableListAdapter.this.header.size(); i++) {
 						parents.add(generateParentView(i));
 						children.add(generateChildView(i, 0));
 					}
@@ -268,15 +364,16 @@ public class QnAActivity extends Activity {
 			textView.setTextColor(Color.BLACK);
 
 			// Set the text starting position
-			textView.setPadding(76, 5, 20, 5);
+			//textView.setPadding(76, 5, 20, 5);
+			textView.setPadding(20, 5, 20, 5);
 			return textView;
 		}
-		
+
 		private String highlightString(String text) {
 			if (pattern == null) {
 				return text;
 			}
-			
+
 			Matcher matcher = pattern.matcher(text);
 			StringBuffer sb = new StringBuffer(text.length());
 			while (matcher.find()) {
@@ -285,27 +382,26 @@ public class QnAActivity extends Activity {
 			matcher.appendTail(sb);
 			return sb.toString();
 		}
-		
+
 		private CharSequence highlight(String text) {
 			if (pattern == null) {
 				return text;
 			}
-			
+
 			return Html.fromHtml(highlightString(text));
 		}
 
 		private View generateChildView(int groupPosition, int childPosition) {
 			Question q = header.get(groupPosition);
-			//int color = Color.parseColor("#FFDDAA");
 			int color = MenuActivity.BACKGROUND_LIGHT;
 			int fontSize = 18;
 			int margin = toPx(20);
-			
+
 			if (!q.containsHTML) {
 				TextView textView = getGenericView();
-					textView.setText(highlight(
-							getChild(groupPosition, childPosition).toString()));
-				
+				textView.setText(highlight(
+						getChild(groupPosition, childPosition).toString()));
+
 				textView.setPadding(margin, 5, 5, 5);
 				textView.setBackgroundColor(color);
 				textView.setTextSize(fontSize);
@@ -318,7 +414,7 @@ public class QnAActivity extends Activity {
 			WebView wv = new WebView(QnAActivity.this);
 			String html = highlightString(getChild(
 					groupPosition, childPosition).toString());
-			wv.loadData(css + html, "text/html", "UTF-8");
+			wv.loadData(css + html, "text/html; charset=UTF-8", null);
 			wv.setHorizontalScrollBarEnabled(false);
 			wv.setBackgroundColor(color);
 			wv.getSettings().setDefaultFontSize(fontSize);
@@ -338,6 +434,23 @@ public class QnAActivity extends Activity {
 			}
 			return children.get(groupPosition);
 		}
+		
+
+		@Override
+		public void onGroupCollapsed(int groupPosition) {
+			super.onGroupCollapsed(groupPosition);
+			ImageView iv = (ImageView)parents.get(groupPosition).findViewById(IMAGE_VIEW_ID);
+			iv.getDrawable().setState(STATE_NORMAL);
+			Log.d("Sunshine", "collapse " + groupPosition);
+		}
+
+		@Override
+		public void onGroupExpanded(int groupPosition) {
+			super.onGroupExpanded(groupPosition);
+			ImageView iv = (ImageView)parents.get(groupPosition).findViewById(IMAGE_VIEW_ID);
+			iv.getDrawable().setState(STATE_EXPANDED);
+			Log.d("Sunshine", "expand " + groupPosition);
+		}
 
 		private View generateParentView(int groupPosition) {
 			TextView textView = getGenericView();
@@ -345,7 +458,41 @@ public class QnAActivity extends Activity {
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
 			textView.setTypeface(typeface);
 			textView.setBackgroundColor(MenuActivity.BACKGROUND_DARK);
-			return textView;
+
+
+			
+			LinearLayout imageLayout = new LinearLayout(QnAActivity.this);
+			imageLayout.setOrientation(LinearLayout.HORIZONTAL);
+			ImageView iv = new ImageView(QnAActivity.this);
+			iv.setImageDrawable(groupIndicator.getConstantState().newDrawable());
+			iv.setId(IMAGE_VIEW_ID);
+			LayoutParams lps = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			lps.gravity = Gravity.CENTER;
+			lps.leftMargin = toPx(10);
+			imageLayout.addView(iv, lps);
+			imageLayout.addView(textView);
+			imageLayout.setBackgroundColor(MenuActivity.BACKGROUND_DARK);
+			
+			if (pattern == null) {
+				return imageLayout;
+			}
+
+			if (groupPosition > 0 && header.get(groupPosition - 1).parent ==
+					header.get(groupPosition).parent) {
+				return imageLayout;
+			}
+
+			LinearLayout ll = new LinearLayout(QnAActivity.this);
+			ll.setId(id++);
+			ll.setOrientation(LinearLayout.VERTICAL);
+
+			TextView headerView = getHeaderView();
+			headerView.setText(Html.fromHtml(header.get(groupPosition).parent.title));
+
+			ll.addView(headerView);
+			ll.addView(imageLayout);
+
+			return ll;
 		}
 
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
@@ -357,7 +504,14 @@ public class QnAActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
+			
+			if (isExpanded) {
+				onGroupExpanded(groupPosition);
+			} else {
+				onGroupCollapsed(groupPosition);
+			}
 			//Log.d("" + groupPosition, "" + isExpanded);
+
 			return parents.get(groupPosition);
 		}
 
@@ -388,58 +542,54 @@ public class QnAActivity extends Activity {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
 			if (url.startsWith("record:")) {
-				url = url.replace("record://", "");
-				String[] sections = url.split("\\.");
-				if (sections.length > 0) {
-					String recordName = sections[0] + ".xml";
+				try {
+					url = url.replace("record://", "");
+					String[] sections = url.split("\\.");
+					if (sections.length > 0) {
+						String recordName = sections[0] + ".xml";
 
-					if (sections.length == 1) {
-						Intent intent = new Intent(QnAActivity.this, RecordActivity.class);
-						intent.putExtra("record", recordName);
-						startActivity(intent);
-					} else {
-						Record record = RecordCache.parseRector(recordName, getAssets());
-						if (record != null) {
-							String headerName = sections[1];
-							Header header = null;
-							for (Section section : record) {
-								for (Header h : section) {
-									if (h.title.replace(" ", "").equalsIgnoreCase(headerName)) {
-										header = h;
+						if (sections.length == 1) {
+							Intent intent = new Intent(QnAActivity.this, RecordActivity.class);
+							intent.putExtra("record", recordName);
+							startActivity(intent);
+						} else {
+							Record record = RecordCache.parseRector(recordName, getAssets());
+							if (record != null) {
+								String headerName = sections[1];
+								Header header = null;
+								for (Section section : record) {
+									for (Header h : section) {
+										if (h.title.replace(" ", "").equalsIgnoreCase(headerName)) {
+											header = h;
+										}
 									}
 								}
-							}
-							if (header != null) {
-								if (header.title.equals(path) && 
-										header.size() == QnAActivity.this.header.size()) {
-									if (sections.length > 2) {
-										openQuestion(sections[2]);
+								if (header != null) {
+									if (header == QnAActivity.this.header) {
+										if (sections.length > 2) {
+											openQuestion(sections[2]);
+										}
+									} else {
+										Intent intent = new Intent(QnAActivity.this, QnAActivity.class);
+										intent.putExtra("header", header);
+										if (sections.length > 2) {
+											intent.putExtra("question", sections[2]);
+										}
+										startActivity(intent);
 									}
 								} else {
-									Intent intent = new Intent(QnAActivity.this, QnAActivity.class);
-									intent.putExtra("header", header);
-									intent.putExtra("path", header.title);
-									if (sections.length > 2) {
-										intent.putExtra("question", sections[2]);
-									}
-									startActivity(intent);
+									Log.d("Sunshine", "No Header: '" + headerName + "'");
 								}
 							} else {
-								Log.d("Sunshine", "No Header: '" + headerName + "'");
+								Log.d("Sunshine", "No Record: '" + recordName + "'");
 							}
-						} else {
-							Log.d("Sunshine", "No Record: '" + recordName + "'");
 						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				return true;
 			} else {
-				//		        View v = getLayoutInflater().inflate(R.layout.browser, null);
-				//		        ((WebView)v.findViewById(R.id.webView)).loadUrl(url);
-				//		        new AlertDialog.Builder(QnAActivity.this)
-				//		        .setTitle("Link")
-				//		        .setView(v)
-				//		        .show();
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, 
 						Uri.parse(url));
 				startActivity(browserIntent);

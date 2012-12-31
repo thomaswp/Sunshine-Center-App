@@ -1,5 +1,9 @@
 package com.sunshine;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sunshine.Record.Header;
@@ -10,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +24,8 @@ import android.widget.LinearLayout;
 
 public class SearchActivity extends Activity {
 	
-	CheckBox checkBoxQuestions, checkBoxAnswers;
+	private final static int MAX_RESULTS = 15;
+	private CheckBox checkBoxQuestions, checkBoxAnswers;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,7 +53,7 @@ public class SearchActivity extends Activity {
 			return;
 		}
 		
-		String q = ((EditText)findViewById(R.id.editTextSearch)).getText().toString();
+		String q = ((EditText)findViewById(R.id.editTextSearch)).getText().toString().toLowerCase();
 		
 		if (q.length() == 0) return;
 		
@@ -65,26 +71,67 @@ public class SearchActivity extends Activity {
 		String patternS = "";
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i];
-			patternS += Pattern.quote(word);
+			patternS += "\\b" + Pattern.quote(word) + "\\b";
 			if (i < words.length - 1) patternS += "|";
 		}
 		Pattern pattern = Pattern.compile(patternS, Pattern.CASE_INSENSITIVE);
+		
+		final HashMap<Question, Integer> map = new HashMap<Record.Question, Integer>();
 		
 		for (String recordS : records) {
 			Record record = RecordCache.parseRector(recordS, getAssets());
 			for (Section section : record) {
 				for (Header header : section) {
 					for (Question question : header) {
-						if (searchQs && 
-								pattern.matcher(question.question).find()) {
+						int count = 0;
+						if (searchQs) {
+							Matcher matcherQs = pattern.matcher(question.question);
+							while (matcherQs.find()) {
+								count += 3;
+							}
+							String qLower = question.question.toLowerCase();
+							int index = qLower.indexOf(q);
+							while (index >= 0) {
+								count += 30;
+								index += q.length();
+								index = qLower.indexOf(q, index);
+							}
+						}
+						if (searchAs) {
+							Matcher matcherAs = pattern.matcher(question.answer);
+							while (matcherAs.find()) {
+								count++;
+								if (words.length > 0 && matcherAs.group().equalsIgnoreCase(q.trim())) {
+									count += 10;
+								}
+							}
+							String qLower = question.answer.toLowerCase();
+							int index = qLower.indexOf(q);
+							while (index >= 0) {
+								count += 10;
+								index += q.length();
+								index = qLower.indexOf(q, index);
+							}
+						}
+						if (count > 0) {
 							h.add(question);
-						} else if (searchAs &&
-								pattern.matcher(question.answer).find()) {
-							h.add(question);
+							map.put(question, count);
 						}
 					}
 				}
 			}
+		}
+		
+		
+		Collections.sort(h.questions, new Comparator<Question>() {
+			@Override
+			public int compare(Question lhs, Question rhs) {
+				return map.get(rhs) - map.get(lhs);
+			}
+		});
+		
+		while (h.size() > MAX_RESULTS) {
+			h.questions.removeLast();
 		}
 		
 		if (h.size() < 1) {
@@ -96,7 +143,6 @@ public class SearchActivity extends Activity {
 		} else {
 			Intent intent = new Intent(this, QnAActivity.class);
 			intent.putExtra("header", h);
-			intent.putExtra("path", title);
 			intent.putExtra("pattern", patternS);
 			startActivity(intent);
 		}

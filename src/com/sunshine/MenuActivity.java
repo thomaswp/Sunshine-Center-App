@@ -2,6 +2,7 @@ package com.sunshine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 	public final static int BACKGROUND_DARK = Color.argb(255, 235, 217, 135);
@@ -38,9 +42,10 @@ public class MenuActivity extends Activity {
         LinearLayout linearLayoutMain = ((LinearLayout)findViewById(R.id.linearLayoutMain));
         linearLayoutMain.setBackgroundColor(BACKGROUND_DARK);
         
+        
         Button buttonSeekers =( Button)findViewById(R.id.buttonSeekers);
         buttonSeekers.setText(Html.fromHtml(
-        		"Seekers<br /><small><small><i>of public records and meetings</i></small></small>"));
+        		"Seekers<br /><small><small><i>of Information</i></small></small>"));
         buttonSeekers.setOnClickListener(
         		new OnClickListener() {
 			@Override
@@ -51,7 +56,7 @@ public class MenuActivity extends Activity {
         
         Button buttonHolders = (Button)findViewById(R.id.buttonHolders);
         buttonHolders.setText(Html.fromHtml(
-        		"Holders<br /><small><small><i>of public records and meetings</i></small></small>"));
+        		"Holders<br /><small><small><i>of Information</i></small></small>"));
         buttonHolders.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -107,7 +112,7 @@ public class MenuActivity extends Activity {
         		new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openWebpage("https://www.facebook.com/pages/" +
+				openWebpage("http://www.facebook.com/pages/" +
 						"Sunshine-Center-of-North-Carolina-Open-Government-Coalition/" +
 						"10150100833975217");
 			}
@@ -117,7 +122,7 @@ public class MenuActivity extends Activity {
         		new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openWebpage("https://twitter.com/NCOpenGov");
+				openWebpage("http://twitter.com/NCOpenGov");
 			}
         });
         

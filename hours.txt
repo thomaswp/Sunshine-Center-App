@@ -2,3 +2,11 @@
 seeker portion of the app
 open meeting law for meeting holders
 2 changes from email
+12/27 6.25
+changed encoding to display utf-8/fixed the law symbol
+reworked layout for different screen sizes (so social bar displays)
+changes from email 11/6 from Brooke
+partial search improvement
+12/28 2.75+
+mostly fixed search headers/drop down arrow problem
+search favors exact terms

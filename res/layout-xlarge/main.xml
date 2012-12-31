@@ -10,10 +10,8 @@
         android:id="@+id/imageViewSunshineBig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="100"
         android:adjustViewBounds="true"
         android:contentDescription="Sunshine"
-        android:maxHeight="100dip"
         android:padding="5dip"
         android:src="@drawable/logo_trans_bigger" />
 
@@ -32,7 +30,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="280dip"
+                android:layout_height="330dip"
                 android:layout_marginBottom="0dip"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
@@ -64,8 +62,8 @@
 
                     <ImageButton
                         android:id="@+id/buttonSearch"
-                        android:layout_width="50dip"
-                        android:layout_height="50dip"
+                        android:layout_width="65dip"
+                        android:layout_height="65dip"
                         android:adjustViewBounds="true"
                         android:paddingBottom="8dip"
                         android:paddingLeft="8dip"
@@ -131,7 +129,7 @@
     <LinearLayout
         android:id="@+id/linearLayoutContact"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dip"
         android:layout_marginBottom="5dip"
         android:background="@drawable/social_bg"
         android:visibility="visible" >
@@ -139,7 +137,7 @@
         <ImageView
             android:id="@+id/imageViewPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/phone" />
@@ -147,7 +145,7 @@
         <ImageView
             android:id="@+id/imageViewEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/email" />
@@ -155,7 +153,7 @@
         <ImageView
             android:id="@+id/imageViewFacebook"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/f_logo" />
@@ -163,7 +161,7 @@
         <ImageView
             android:id="@+id/imageViewTwitter"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/t_logo" />
@@ -171,7 +169,7 @@
         <ImageView
             android:id="@+id/imageViewSunshine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/sunshine" />

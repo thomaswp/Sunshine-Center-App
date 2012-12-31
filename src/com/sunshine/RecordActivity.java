@@ -6,6 +6,10 @@ import com.sunshine.Record.Header;
 import com.sunshine.Record.Section;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -30,11 +34,27 @@ public class RecordActivity extends Activity {
 		
 		String r = getIntent().getExtras().getString("record");
 		record = RecordCache.parseRector(r, getAssets());
-		if (record == null) {
-			finish();
-		}
 		
-		createContent();
+		if (record == null) {
+			new AlertDialog.Builder(this)
+			.setTitle("Error")
+			.setMessage("We're sorry, but an error has occured. Please try again later")
+			.setPositiveButton("Ok", new Dialog.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			})
+			.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					finish();
+				}
+			})
+			.show();
+		} else {
+			createContent();
+		}
 	}
 	
 	private void createContent() {
@@ -86,7 +106,6 @@ public class RecordActivity extends Activity {
 					public void onClick(View v) {
 						Intent intent = new Intent(RecordActivity.this, QnAActivity.class);
 						intent.putExtra("header", fHeader);
-						intent.putExtra("path", fHeader.title);
 						startActivity(intent);
 					}
 				});

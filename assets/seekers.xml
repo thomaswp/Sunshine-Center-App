@@ -160,7 +160,8 @@
 			<q>Where are these public records?</q>
 			<an>Public records are held in government offices all across the state.</an>
 		</header>
-		<header title="Fifteen Excuses Officials Might Give">
+		<header title="Fifteen Reasons Officials Might Give"
+		    tip="Touch a reason to see if it is valid">
 			<q>That's not a public document - it's a "draft" or "working"
 				document. It's not finished so it's not "official."</q>
 			<an>State law does not distinguish between a "draft" or a "working"
@@ -226,7 +227,7 @@
 		</header>
 	</section>
 	<section title="Open Meetings">
-		<header title="Open Meeting Law">
+		<header title="Open Meetings Law">
 			<q anchor="whoIsSubject">Who is subject to the law?</q>
 			<an>It applies to any public body. "Public body" is a broad term that
 				includes any authority, board, commission, committee, council or

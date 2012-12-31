@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <record name="Laws">
+    <!-- -->
+    <section title="Character Test">
+        <header title="Character Test">
+            <q>“This ‘is’ some – stuff &lt;§&gt; and-I‑don’t like it.”</q>
+            <an>“This ‘is’ some – stuff &lt;§&gt; and-I‑don’t like it.”</an>
+            <q>“This ‘is’ some – stuff &lt;§&gt; and-I‑don’t like it.”</q>
+            <an>“This ‘is’ <i>some</i> – stuff &lt;§&gt; and-<b>I</b>‑don’t like it.”</an>
+        </header>
+    </section>
+    <!-- -->
 	<section title="Laws">
 		<header title="Public Records Law">
 			<q anchor="132">§ 132-1. "Public records" defined.</q>
