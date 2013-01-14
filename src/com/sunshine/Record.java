@@ -122,7 +122,7 @@ public class Record extends LinkedList<Record.Section> {
 		}
 	}
 	
-	//Represents a singe question and answer
+	//Represents a single question and answer
 	public static class Question implements Serializable {
 		private static final long serialVersionUID = 1L;
 		public String question, answer, anchor;
