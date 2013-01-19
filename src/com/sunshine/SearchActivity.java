@@ -83,10 +83,10 @@ public class SearchActivity extends Activity {
 				String word = words[i];
 				//Don't add "reserved" words, like html elements
 				if (RESERVED.indexOf(word) == -1) {
+					//search for any of the words
+					if (patternS.length() > 0) patternS += "|";
 					//The word should be by itself
 					patternS += "\\b" + Pattern.quote(word) + "\\b";
-					//search for any of the words
-					if (i < words.length - 1) patternS += "|";
 				}
 			}
 			
