@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 public class SearchActivity extends Activity {
 
 	private final static int MAX_RESULTS = 15;
-	private final static String RESERVED = "b,i,a,ul,ol,li";
+	private final static String RESERVED = "b,i,a,ul,ol,li,br";
 	private CheckBox checkBoxQuestions, checkBoxAnswers;
 
 	@Override
