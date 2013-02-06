@@ -12,4 +12,5 @@ mostly fixed search headers/drop down arrow problem
 search favors exact terms
 12/31 2.75
 Comments, cleanup and bug fixes
-2/6/ 4:00
+2/6/ 1h
+Revisions from Dean Parsons
