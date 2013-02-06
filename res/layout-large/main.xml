@@ -30,48 +30,12 @@
             <LinearLayout
                 android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="330dip"
+                android:layout_height="280dip"
                 android:layout_marginBottom="0dip"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="20dip"
                 android:layout_marginTop="5dip"
                 android:orientation="vertical" >
-
-                <LinearLayout
-                    android:id="@+id/linearLayout5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dip" >
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="10dip"
-                        android:text="@string/recordsAndMeetings"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="#000000" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout6"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" >
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/buttonSearch"
-                        android:layout_width="65dip"
-                        android:layout_height="65dip"
-                        android:adjustViewBounds="true"
-                        android:paddingBottom="8dip"
-                        android:paddingLeft="8dip"
-                        android:paddingRight="5dip"
-                        android:paddingTop="5dip"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/search" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
@@ -173,6 +137,15 @@
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/sunshine" />
+        
+        <ImageView
+            android:id="@+id/imageViewSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/social"
+            android:src="@drawable/search2" />
+
     </LinearLayout>
 
 </LinearLayout>

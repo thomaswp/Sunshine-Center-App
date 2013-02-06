@@ -18,27 +18,29 @@ public final class R {
         public static final int logo_trans_bigger=0x7f020004;
         public static final int phone=0x7f020005;
         public static final int search=0x7f020006;
-        public static final int social=0x7f020007;
-        public static final int social_bg=0x7f020008;
-        public static final int social_bg_old=0x7f020009;
-        public static final int social_pressed=0x7f02000a;
-        public static final int social_released=0x7f02000b;
-        public static final int sunshine=0x7f02000c;
-        public static final int t_logo=0x7f02000d;
+        public static final int search2=0x7f020007;
+        public static final int social=0x7f020008;
+        public static final int social_bg=0x7f020009;
+        public static final int social_bg_old=0x7f02000a;
+        public static final int social_pressed=0x7f02000b;
+        public static final int social_released=0x7f02000c;
+        public static final int sunshine=0x7f02000d;
+        public static final int t_logo=0x7f02000e;
     }
     public static final class id {
         public static final int buttonHolders=0x7f05000a;
         public static final int buttonLaws=0x7f05000c;
         public static final int buttonSearch=0x7f050007;
         public static final int buttonSeekers=0x7f050009;
-        public static final int checkBoxAnswers=0x7f05001a;
-        public static final int checkBoxQuestions=0x7f050019;
-        public static final int editTextSearch=0x7f050017;
-        public static final int expandableListView1=0x7f05001b;
+        public static final int checkBoxAnswers=0x7f05001b;
+        public static final int checkBoxQuestions=0x7f05001a;
+        public static final int editTextSearch=0x7f050018;
+        public static final int expandableListView1=0x7f05001c;
         public static final int imageView1=0x7f050002;
         public static final int imageViewEmail=0x7f050013;
         public static final int imageViewFacebook=0x7f050014;
         public static final int imageViewPhone=0x7f050012;
+        public static final int imageViewSearch=0x7f050017;
         public static final int imageViewSunshine=0x7f050016;
         public static final int imageViewSunshineBig=0x7f05000f;
         public static final int imageViewTwitter=0x7f050015;
@@ -53,7 +55,7 @@ public final class R {
         public static final int linearLayoutMain=0x7f05000e;
         public static final int relativeLayout1=0x7f050001;
         public static final int textView1=0x7f050005;
-        public static final int textView2=0x7f050018;
+        public static final int textView2=0x7f050019;
         public static final int webView=0x7f05000d;
     }
     public static final class layout {
@@ -73,6 +75,7 @@ public final class R {
         public static final int questions=0x7f040008;
         public static final int recordsAndMeetings=0x7f040002;
         public static final int search=0x7f040006;
+        public static final int search2=0x7f04000b;
         public static final int searchInText=0x7f040007;
         public static final int seekers=0x7f040003;
     }

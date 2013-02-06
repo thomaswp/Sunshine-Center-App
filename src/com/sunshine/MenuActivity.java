@@ -71,13 +71,13 @@ public class MenuActivity extends Activity {
 			}
 		});
         
-        ImageButton buttonSearch = (ImageButton)findViewById(R.id.buttonSearch);
-        buttonSearch.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				search();
-			}
-		});
+//        ImageButton buttonSearch = (ImageButton)findViewById(R.id.buttonSearch);
+//        buttonSearch.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				search();
+//			}
+//		});
         
         new WebView(this); //possibly speeds up the first load of webviews
         
@@ -136,6 +136,15 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				openWebpage("http://www.elon.edu/e-web/academics/" +
 						"communications/ncopengov/");
+			}
+        });
+        
+        //Website
+        ((ImageView)findViewById(R.id.imageViewSearch)).setOnClickListener(
+        		new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				search();
 			}
         });
     }
