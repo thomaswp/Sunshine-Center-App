@@ -9,12 +9,15 @@
     <ImageView
         android:id="@+id/imageViewSunshineBig"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="100"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="Sunshine"
-        android:maxHeight="100dip"
-        android:padding="5dip"
+        android:paddingBottom="5dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="5dip"
+        android:layout_weight="1"
+        android:layout_gravity="top"
         android:src="@drawable/logo_trans_bigger" />
 
     <LinearLayout
@@ -24,62 +27,55 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="220dip"
+            android:layout_marginBottom="0dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="5dip"
             android:orientation="vertical" >
 
             <LinearLayout
-                android:id="@+id/linearLayout1"
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="220dip"
-                android:layout_marginBottom="0dip"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="5dip"
+                android:layout_height="match_parent"
                 android:orientation="vertical" >
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
+                <Button
+                    android:id="@+id/buttonSeekers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="15dip"
+                    android:layout_weight="1"
+                    android:text="@string/seekers"
+                    android:textSize="20dip" />
+
+                <Button
+                    android:id="@+id/buttonHolders"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="15dip"
+                    android:layout_weight="1"
+                    android:text="@string/holders"
+                    android:textSize="20dip" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dip"
+                    android:layout_weight="1" >
 
                     <Button
-                        android:id="@+id/buttonSeekers"
-                        android:layout_width="match_parent"
+                        android:id="@+id/buttonLaws"
+                        android:layout_width="0dip"
                         android:layout_height="match_parent"
-                        android:layout_gravity="top"
-                        android:layout_marginBottom="15dip"
                         android:layout_weight="1"
-                        android:text="@string/seekers"
+                        android:text="@string/laws"
                         android:textSize="20dip" />
-
-                    <Button
-                        android:id="@+id/buttonHolders"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="15dip"
-                        android:layout_weight="1"
-                        android:text="@string/holders"
-                        android:textSize="20dip" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dip"
-                        android:layout_weight="1" >
-
-                        <Button
-                            android:id="@+id/buttonLaws"
-                            android:layout_width="0dip"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/laws"
-                            android:textSize="20dip" />
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -139,15 +135,15 @@
             android:layout_weight="1"
             android:background="@drawable/social"
             android:src="@drawable/sunshine" />
-        
+
         <ImageView
             android:id="@+id/imageViewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/social"
-            android:paddingTop="2dip"
             android:paddingBottom="2dip"
+            android:paddingTop="2dip"
             android:src="@drawable/search2" />
     </LinearLayout>
 

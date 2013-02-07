@@ -12,7 +12,10 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="Sunshine"
-        android:padding="5dip"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
         android:src="@drawable/logo_trans_bigger" />
 
     <LinearLayout
