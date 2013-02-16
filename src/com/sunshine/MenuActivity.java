@@ -3,9 +3,12 @@ package com.sunshine;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
@@ -16,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 /**
  * Main menu activity
@@ -37,6 +41,22 @@ public class MenuActivity extends Activity {
         LinearLayout linearLayoutMain = ((LinearLayout)findViewById(R.id.linearLayoutMain));
         linearLayoutMain.setBackgroundColor(BACKGROUND_DARK);
         
+        //Resize social bar icons to fit the screen
+        //There's really no concise way to do this in the layout
+        LinearLayout linearLayoutSocial = (LinearLayout)findViewById(R.id.linearLayoutContact);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int iconWidth = Math.min(metrics.widthPixels / 6 - 5, 92);
+        Log.d("", "" + iconWidth);
+        linearLayoutSocial.getLayoutParams().height = iconWidth;
+        linearLayoutSocial.requestLayout();
+  
+        //Again, there's no easy way to make the imageView squash but not fill extra space
+        ImageView imageViewSunshine = (ImageView)findViewById(R.id.imageViewSunshineBig);
+        LinearLayout linearLayoutButtons = (LinearLayout)findViewById(R.id.linearLayoutButtons);
+        int socialHeight = linearLayoutSocial.getLayoutParams().height;
+        int buttonsHeight = linearLayoutButtons.getLayoutParams().height;
+        imageViewSunshine.setMaxHeight(metrics.heightPixels - socialHeight - buttonsHeight);
+        imageViewSunshine.requestLayout();
         
         //Set up button Actions
         
@@ -71,13 +91,6 @@ public class MenuActivity extends Activity {
 			}
 		});
         
-//        ImageButton buttonSearch = (ImageButton)findViewById(R.id.buttonSearch);
-//        buttonSearch.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				search();
-//			}
-//		});
         
         new WebView(this); //possibly speeds up the first load of webviews
         

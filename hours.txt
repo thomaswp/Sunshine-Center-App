@@ -16,3 +16,5 @@ Comments, cleanup and bug fixes
 Revisions from Dean Parsons
 2/7 0.75h
 Final revision from Dean Parsons
+2/16 2.75h
+Reworking icons, layout, publishing

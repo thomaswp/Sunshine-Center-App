@@ -12,81 +12,61 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="Sunshine"
-        android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:paddingLeft="15dip"
         android:paddingRight="15dip"
+        android:paddingTop="5dip"
         android:src="@drawable/logo_trans_bigger" />
 
     <LinearLayout
-        android:id="@+id/linearLayout7"
+        android:id="@+id/linearLayoutButtons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dip"
+        android:layout_marginBottom="0dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="5dip"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <Button
+            android:id="@+id/buttonSeekers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_marginBottom="15dip"
+            android:layout_weight="1"
+            android:text="@string/seekers"
+            android:textSize="20sp" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="280dip"
-                android:layout_marginBottom="0dip"
-                android:layout_marginLeft="20dip"
-                android:layout_marginRight="20dip"
-                android:layout_marginTop="5dip"
-                android:orientation="vertical" >
+        <Button
+            android:id="@+id/buttonHolders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="15dip"
+            android:layout_weight="1"
+            android:text="@string/holders"
+            android:textSize="20sp" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dip"
+            android:layout_weight="1" >
 
-                    <Button
-                        android:id="@+id/buttonSeekers"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="top"
-                        android:layout_marginBottom="15dip"
-                        android:layout_weight="1"
-                        android:text="@string/seekers"
-                        android:textSize="20dip" />
-
-                    <Button
-                        android:id="@+id/buttonHolders"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="15dip"
-                        android:layout_weight="1"
-                        android:text="@string/holders"
-                        android:textSize="20dip" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dip"
-                        android:layout_weight="1" >
-
-                        <Button
-                            android:id="@+id/buttonLaws"
-                            android:layout_width="0dip"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/laws"
-                            android:textSize="20dip" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+            <Button
+                android:id="@+id/buttonLaws"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/laws"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutSpacer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -123,6 +103,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
+            android:padding="5dip"
             android:src="@drawable/f_logo" />
 
         <ImageView
@@ -131,6 +112,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
+            android:padding="5dip"
             android:src="@drawable/t_logo" />
 
         <ImageView
@@ -139,16 +121,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
+            android:padding="5dip"
             android:src="@drawable/sunshine" />
-        
+
         <ImageView
             android:id="@+id/imageViewSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/social"
-            android:src="@drawable/search2" />
-
+            android:src="@drawable/search" />
     </LinearLayout>
 
 </LinearLayout>
