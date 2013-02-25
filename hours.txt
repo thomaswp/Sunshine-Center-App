@@ -18,3 +18,7 @@ Revisions from Dean Parsons
 Final revision from Dean Parsons
 2/16 2.75h
 Reworking icons, layout, publishing
+2/24 0.25h
+Version 1.1 - small text changes
+
+Total: 18.5h Submitted
